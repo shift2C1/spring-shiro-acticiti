@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <!--&lt;!&ndash; override these for application-specific URLs if you like:-->
+        <property name="loginUrl" value="/login.html"/>
+        <property name="successUrl" value="/index"/>
+        <property name="unauthorizedUrl" value="/403.html"/>
+        <!-- The 'filters' property is not necessary since any declared javax.servlet.Filter bean  -->
+        <!-- defined will be automatically acquired and available via its beanName in chain        -->
+        <!-- definitions, but you can perform instance overrides or name aliases here if you like: -->
+        <!-- <property name="filters">
+            <util:map>
+                <entry key="anAlias" value-ref="someFilter"/>
+            </util:map>
+        </property> -->
+        <property name="filterChainDefinitions">
+            <value>
+                /app/subLogin=anon
+                /** = authc
+                /app/** = authc ,roles[user]
+
+                <!--# some example chain definitions:-->
+                <!--/admin/** = authc, roles[admin]-->
+                <!--/docs/** = authc, perms[document:read]-->
+                <!--/** = authc-->
+                <!--# more URL-to-FilterChain definitions here-->
+            </value>
+        </property>
+    </bean>
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="shiroRealm"></property>
+    </bean>
+    <bean id="shiroRealm" class="com.pipichao.config.ShiroRealm"></bean>
+
+
+    <!--使用注解的方式来控制权限-->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"></bean>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"></property>
+    </bean>
+
+
+</beans>
