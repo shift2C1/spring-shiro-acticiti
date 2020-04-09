@@ -2,8 +2,12 @@ package com.pipichao.config;
 
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authz.AuthorizationException;
+import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
@@ -32,8 +36,9 @@ public class TotalExceptionHandler implements HandlerExceptionResolver {
         //对拦截的异常做统一的处理
         if (e instanceof AuthorizationException){
             jsonObject.put("msg","认证授权失败");
-        }else {
-            e.printStackTrace();
+        }else if (e instanceof Exception){
+//            e.printStackTrace();
+            jsonObject.put("msg","服务器内部错误");
         }
         try {
             httpServletResponse.getWriter().write(jsonObject.toJSONString());

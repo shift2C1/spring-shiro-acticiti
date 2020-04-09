@@ -19,8 +19,16 @@
         </property> -->
         <property name="filterChainDefinitions">
             <value>
-                /app/subLogin=anon
+                <!--登录 匿名-->
+                /app/user/login=anon
+                <!--退出 匿名-->
+                /app/user/logout=anon
+                <!--前端框架的静态资源 匿名-->
+                /layui/** = anon
+                /pages = anon
+                <!---->
                 /** = authc
+                <!--springmvc 框架拦截的请求 需要认证 ，角色-->
                 /app/** = authc ,roles[user]
 
                 <!--# some example chain definitions:-->
@@ -42,6 +50,6 @@
     <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
         <property name="securityManager" ref="securityManager"></property>
     </bean>
-
+    <!--https://www.jianshu.com/p/9098f492fa72-->
 
 </beans>

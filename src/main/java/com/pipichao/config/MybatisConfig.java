@@ -18,7 +18,7 @@ public class MybatisConfig {
     public DruidDataSource druidDataSource(){
         DruidDataSource druidDataSource=new DruidDataSource();
         druidDataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        druidDataSource.setUrl("jdbc:mysql://localhost:3306/syerp?serverTimezone=UTC");
+        druidDataSource.setUrl("jdbc:mysql://localhost:3306/ssm_shiro_activiti?serverTimezone=UTC");
         druidDataSource.setUsername("root");
         druidDataSource.setPassword("2437262431");
         return druidDataSource;
